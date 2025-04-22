@@ -4,10 +4,12 @@ package com.sarms.controller;
 import com.sarms.model.Enrollment;
 import com.sarms.model.SemesterRecord;
 import com.sarms.model.Student;
+import com.sarms.model.Course;
 import com.sarms.service.EnrollmentService;
 import com.sarms.service.GradingService;
 import com.sarms.service.ReportService;
 import com.sarms.service.StudentService;
+import com.sarms.service.CourseService;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,13 +20,15 @@ public class StudentController {
     private final EnrollmentService enrollmentService;
     private final GradingService gradingService;
     private final ReportService reportService;
+    private final CourseService courseService;
 
     public StudentController(StudentService studentService, EnrollmentService enrollmentService,
-                             GradingService gradingService, ReportService reportService) {
+                             GradingService gradingService, ReportService reportService, CourseService courseService) {
         this.studentService = studentService;
         this.enrollmentService = enrollmentService;
         this.gradingService = gradingService;
         this.reportService = reportService;
+        this.courseService = courseService;
     }
 
     public void registerStudent(Student student) throws SQLException {
@@ -33,6 +37,10 @@ public class StudentController {
 
     public Student getStudentByRollNumber(String rollNumber) throws SQLException {
         return studentService.getStudentByRollNumber(rollNumber);
+    }
+
+    public Course getCourseByCourseCode(String courseCode) throws SQLException {
+        return courseService.getCourseByCourseCode(courseCode);
     }
 
     public void enrollInCourse(String rollNumber, String courseCode, int semester) throws SQLException {
@@ -57,6 +65,10 @@ public class StudentController {
 
     public List<SemesterRecord> getAllSemesterRecords(String rollNumber) throws SQLException {
         return gradingService.getStudentRecords(rollNumber);
+    }
+
+    public List<Course> getAllCourses() throws SQLException {
+        return courseService.getAllCourses();
     }
 
     public Map<String, Object> generateSemesterReport(String rollNumber, int semester) throws SQLException {

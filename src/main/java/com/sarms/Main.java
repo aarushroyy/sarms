@@ -51,8 +51,8 @@ public class Main {
 
         // Initialize controllers
         AuthController authController = new AuthController(authService);
-        StudentController studentController = new StudentController(studentService, enrollmentService, gradingService, reportService);
-        FacultyController facultyController = new FacultyController(enrollmentService, studentService, gradingService);
+        StudentController studentController = new StudentController(studentService, enrollmentService, gradingService, reportService, courseService);
+        FacultyController facultyController = new FacultyController(enrollmentService, studentService, gradingService, courseService);
         AdminController adminController = new AdminController(courseService, studentService, gradingService);
 
         // Initialize and show the GUI

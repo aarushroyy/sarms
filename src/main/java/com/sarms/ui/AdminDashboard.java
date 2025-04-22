@@ -216,28 +216,105 @@ public class AdminDashboard extends JPanel {
         loadCoursesTable(tableModel);
 
         // Add course button action
+//        addButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                // In a real application, you would open a dialog to add a course
+//                JOptionPane.showMessageDialog(panel, "Add Course dialog would be shown here.",
+//                        "Add Course", JOptionPane.INFORMATION_MESSAGE);
+//            }
+//        });
+//
+//        // Edit course button action
+//        editButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                int selectedRow = courseTable.getSelectedRow();
+//                if (selectedRow >= 0) {
+//                    String courseCode = (String) tableModel.getValueAt(selectedRow, 0);
+//                    // In a real application, you would open a dialog to edit the course
+//                    JOptionPane.showMessageDialog(panel, "Edit Course dialog for " + courseCode,
+//                            "Edit Course", JOptionPane.INFORMATION_MESSAGE);
+//                } else {
+//                    JOptionPane.showMessageDialog(panel, "Please select a course to edit.",
+//                            "No Selection", JOptionPane.WARNING_MESSAGE);
+//                }
+//            }
+//        });
+
+
+// Add course button action
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // In a real application, you would open a dialog to add a course
-                JOptionPane.showMessageDialog(panel, "Add Course dialog would be shown here.",
-                        "Add Course", JOptionPane.INFORMATION_MESSAGE);
+                CourseDialog dialog = new CourseDialog(
+                        (JFrame) SwingUtilities.getWindowAncestor(AdminDashboard.this),
+                        "Add New Course",
+                        null);
+                dialog.setVisible(true);
+
+                if (dialog.isApproved()) {
+                    try {
+                        Course newCourse = dialog.getCourse();
+                        adminController.createCourse(newCourse);
+
+                        // Refresh the courses table
+                        loadCoursesTable(tableModel);
+
+                        JOptionPane.showMessageDialog(panel,
+                                "Course added successfully.",
+                                "Success",
+                                JOptionPane.INFORMATION_MESSAGE);
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(panel,
+                                "Error adding course: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             }
         });
 
-        // Edit course button action
+// Edit course button action
         editButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = courseTable.getSelectedRow();
                 if (selectedRow >= 0) {
                     String courseCode = (String) tableModel.getValueAt(selectedRow, 0);
-                    // In a real application, you would open a dialog to edit the course
-                    JOptionPane.showMessageDialog(panel, "Edit Course dialog for " + courseCode,
-                            "Edit Course", JOptionPane.INFORMATION_MESSAGE);
+
+                    try {
+                        Course course = adminController.getCourseByCourseCode(courseCode);
+
+                        CourseDialog dialog = new CourseDialog(
+                                (JFrame) SwingUtilities.getWindowAncestor(AdminDashboard.this),
+                                "Edit Course",
+                                course);
+                        dialog.setVisible(true);
+
+                        if (dialog.isApproved()) {
+                            Course updatedCourse = dialog.getCourse();
+                            adminController.updateCourse(updatedCourse);
+
+                            // Refresh the courses table
+                            loadCoursesTable(tableModel);
+
+                            JOptionPane.showMessageDialog(panel,
+                                    "Course updated successfully.",
+                                    "Success",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    } catch (SQLException ex) {
+                        JOptionPane.showMessageDialog(panel,
+                                "Error editing course: " + ex.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(panel, "Please select a course to edit.",
-                            "No Selection", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(panel,
+                            "Please select a course to edit.",
+                            "No Selection",
+                            JOptionPane.WARNING_MESSAGE);
                 }
             }
         });
