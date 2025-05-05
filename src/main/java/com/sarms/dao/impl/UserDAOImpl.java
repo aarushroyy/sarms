@@ -14,7 +14,7 @@ import java.util.List;
 public class UserDAOImpl implements UserDAO {
 
     @Override
-    public void save(User user) throws SQLException {
+    public int save(User user) throws SQLException {
         String query = "INSERT INTO users (username, password, password_salt, role, display_name) " +
                 "VALUES (?, ?, ?, ?, ?)";
 
@@ -31,7 +31,7 @@ public class UserDAOImpl implements UserDAO {
             stmt.setString(4, user.getRole().toString());
             stmt.setString(5, user.getDisplayName());
 
-            stmt.executeUpdate();
+            return stmt.executeUpdate();
         }
     }
 

@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface UserDAO {
-    void save(User user) throws SQLException;
+    int save(User user) throws SQLException;
     User findByUsername(String username) throws SQLException;
     List<User> findAll() throws SQLException;
     List<User> findByRole(String role) throws SQLException;

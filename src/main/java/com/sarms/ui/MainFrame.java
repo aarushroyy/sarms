@@ -22,6 +22,8 @@ public class MainFrame extends JFrame {
     private LoginPanel loginPanel;
     private JPanel contentPanel;
     private JPanel currentPanel;
+    private RegistrationPanel registrationPanel;
+
 
     public MainFrame(AuthController authController, StudentController studentController,
                      FacultyController facultyController, AdminController adminController) {
@@ -51,8 +53,16 @@ public class MainFrame extends JFrame {
 
         // Show login panel by default
         showLoginPanel();
+
+        registrationPanel = new RegistrationPanel(authController, this);
+        contentPanel.add(registrationPanel, "registration");
     }
 
+    public void showRegistrationPanel() {
+        CardLayout cl = (CardLayout) contentPanel.getLayout();
+        cl.show(contentPanel, "registration");
+        currentPanel = registrationPanel;
+    }
     public void showLoginPanel() {
         CardLayout cl = (CardLayout) contentPanel.getLayout();
         cl.show(contentPanel, "login");

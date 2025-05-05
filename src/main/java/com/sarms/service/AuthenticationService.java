@@ -73,6 +73,32 @@ public class AuthenticationService {
         return null; // Authentication failed
     }
 
+    // Update src/main/java/com/sarms/service/AuthenticationService.java
+// Add this method:
+
+    public boolean registerStudent(Student student) throws SQLException {
+        // Check if student already exists
+        Student existingStudent = studentDAO.findByRollNumber(student.getRollNumber());
+        if (existingStudent != null) {
+            return false;
+        }
+
+        // Register the student
+        studentDAO.save(student);
+
+        // Also create a user entry for the student to enable login
+        User user = new User(student.getRollNumber(), "", Role.STUDENT, student.getName());
+        user.setPassword(student.getPassword()); // This will be hashed by UserDAO
+
+        // Check if user already exists (shouldn't happen if student doesn't exist)
+        User existingUser = userDAO.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            return false;
+        }
+
+        return userDAO.save(user) > 0;
+    }
+
     public boolean registerUser(User user) throws SQLException {
         // Check if user already exists
         User existingUser = userDAO.findByUsername(user.getUsername());
@@ -106,3 +132,4 @@ public class AuthenticationService {
         return user != null && user.getRole() == requiredRole;
     }
 }
+

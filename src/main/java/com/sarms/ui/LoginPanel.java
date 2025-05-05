@@ -116,5 +116,28 @@ public class LoginPanel extends JPanel {
                 }
             }
         });
+
+        // Update src/main/java/com/sarms/ui/LoginPanel.java
+// Add this after the login button:
+
+// Register link
+        JButton registerLink = new JButton("New User? Register here");
+        registerLink.setBorderPainted(false);
+        registerLink.setContentAreaFilled(false);
+        registerLink.setForeground(Color.BLUE);
+        registerLink.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerLink.setName("registerLink");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.insets = new Insets(10, 5, 5, 5);
+        formPanel.add(registerLink, gbc);
+
+// Add action listener to the register link
+        registerLink.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.showRegistrationPanel();
+            }
+        });
     }
 }

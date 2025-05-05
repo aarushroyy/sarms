@@ -2,6 +2,7 @@
 package com.sarms.controller;
 
 import com.sarms.model.User;
+import com.sarms.model.Student;
 import com.sarms.service.AuthenticationService;
 
 import java.sql.SQLException;
@@ -34,5 +35,16 @@ public class AuthController {
 
     public User getCurrentUser() {
         return currentUser;
+    }
+
+// Update src/main/java/com/sarms/controller/AuthController.java
+// Add these methods:
+
+    public boolean registerUser(User user) throws SQLException {
+        return authService.registerUser(user);
+    }
+
+    public boolean registerStudent(Student student) throws SQLException {
+        return authService.registerStudent(student);
     }
 }
